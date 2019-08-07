@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Análisis espacial del índice de riesgo a inundaciones por lluvias asocidas al Fenómeno del Niño</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Antony Barja  Analista junior en datos espaciales" />
+    <link rel="stylesheet" href="mycss.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Análisis espacial del índice de riesgo a inundaciones por lluvias asocidas al Fenómeno del Niño
+## <code>&lt;img src=&quot;img/logo.png&quot;&gt;</code><br>
+### Antony Barja<br> Analista junior en datos espaciales
+### 2019/07/07 (updated: 2019-08-07)
+
+---
+
+
+
+background-size: cover
+class: center, middle, inverse
+# Aspectos generales
+
+---
+# Reportes de emergencias ante lluvias e inundaciones durante los ultimos años
+
+&lt;img src="img/General.png" width="850px" height="420px" style="display: block; margin: auto;" /&gt;
+
+---
+# Solo considerando el litoral costero desde Tumbes hasta Arequipa
+
+&lt;img src="img/Local.png" width="850px" height="420px" style="display: block; margin: auto;" /&gt;
+
+---
+# CENEPRED: Mapa de susceptibildad a Inundaciones por lluvias asociadas al Niño 
+
+.pull-left[
+* Insumos:
+ * Geomorfología del terreno
+ * Pendiente
+ * Anomalias de Pp durante los eventos del niño **
+ 
+* Resultados:
+ * **El color rojo representa zonas con susceptibilidad muy alta, es decir áreas con mayor predisposición a presentar inundaciones en relación a la ocurrencia de lluvias fuertes.**
+]
+.pull-right[
+&lt;img src="img/cenepred.png" width="250px" height="400px" /&gt;
+]
+
+##### Mas información consulte [aqui ](https://cenepred.gob.pe/web/wp-content/uploads/2018/08/Escenario_NACIONAL.pdf)
+---
+# CENEPRED: Zonas susceptibles a inudación por lluvias asociadas a eventos del Niño en los niveles muy alto
+
+| Departamento | Nivel de riesgo | Población |
+|  -- |--|--|
+| Lambayeque | Muy alto | **1 004 625** |
+|  La libertad | Muy alto | 603 558|
+|  Lima | Muy alto |553 630|
+|  Piura | Muy alto | 275 504 |
+|  Ica | Muy alto | 189 612 |
+|  Tumbes | Muy alto | 99 458|
+|  Ancash | Muy alto |73 468 |
+
+---
+# Introducción
+Existe diferentes métodologías para evaluar la vulnerabildad y el riesgo
+
+&lt;img src="img/paperg.png" width="800px" height="420px" style="display: block; margin: auto;" /&gt;
+
+---
+# Pero ... 
+ Actualmente las diferentes instituciones cómo CENEPRED o INDICE utilizan la metodología de **AHP** (Análisis de procesos jerárquicos)
+ 
+* Ventajas:
+ * Es una metodología que caracteriza de mejor manera el riesgo a nivel local
+ * No requiere muchos indicadores
+
+* Desventajas
+ * **Agrupa el riesgo,vulnerabilidad y peligro** sin identidicar el de mayor predominancia
+ * La ponderación a los indicadores varían de un experto a otro dependiendo de su especialización
+ * Puede producir inconsistencias cuando se trata con muchos indicadores
+ * La ponderación experta puede no ser transferible de un área a otra
+ * Etc
+ 
+* Otras metodologías como **asiganar pesos iguales**, no existen estadísticas o bases empíricas para elegir los valores de las ponderaciones y los resultados reflejan un conocimiento insuficiente de las relaciones causales (Rubaiya K,et.al,2019) 
+
+---
+# Entonces:
+Frente a estás diferentes metodologías, existen 3 grandes problemáticas, y estas son:
+ * No identifica la zona de mayor riesgo
+ * Depende mucho de los pesos de indicadores de los expertos
+ * Multicolinealidad de los datos (ruido)
+
+# Solución : 
+ * Utilizar índices que me indentifiquen las zonas de alto riesgo
+ * **Emplear una técnica de minería de datos** para ponder y reducir los problemas de multicolinealidad de los indicadores.
+---
+# Qué es el Análisis de Principales Componentes ?
+Es una técnica de minería de datos que reduce las dimencionalidad de estos mismos eliminando el ruido y la redundancia en los datos.
+
+#### Objetivos del ACP:
+* Identificar patrones ocultos en un conjunto de datos
+* Reducir la dimensionalidad de los datos eliminando el ruido y la redundancia.
+* Identificar variables correlacionadas
+
+&lt;img src="img/acp.png" width="700px" height="250px" style="display: block; margin: auto;" /&gt;
+---
+# En que casos puedo aplicarlo?
+--
+.pull-left[
+&lt;img src="img/tenor.gif" width="550px" height="350px" /&gt;
+]
+
+--
+.pull-right[
+### Unicamente a los componentes del riesgo que presentan más de 6 índicadores, especialmente a **la vulnerabilidad**.
+### Para nuestro caso el peligro y la falta de capacidad de respuesta solo tiene a los máximo entre 3 a 5 indicadores
+]
+---
+# Indicadores que conforman los diferentes componentes del Índice de riesgo
+
+&lt;img src="img/comp.png" width="1379" style="display: block; margin: auto;" /&gt;
+
+---
+# Índice de Peligro
+  
+&lt;img src="img/peligro.png" width="400px" height="500px" style="display: block; margin: auto;" /&gt;
+
+---
+# Índice de Vulnerabilidad
+&lt;img src="img/vulne2.png" width="400px" height="500px" style="display: block; margin: auto;" /&gt;
+---
+# Componentes principales:
+
+&lt;img src="img/barras.png" width="4000" /&gt;
+
+| Componente Principal | Descripción | cardinalidad |
+|  -- |--|--|
+| CP1 |  Material precario en las vivienda| (+)|
+|  CP2 | Enfermedades epidemiológicas relacionados al agua |(+) |
+|  CP2 |Indice de pobreza con susceptibilid ad a inundación con enfermedades transmitidas por vectores  |(+)|
+
+---
+# Índice de falta de capacidad de respuesta
+
+&lt;img src="img/fcrp.png" width="400px" height="500px" style="display: block; margin: auto;" /&gt;
+
+---
+# Índice de riesgo
+
+&lt;img src="img/riesgo.png" width="400px" height="500px" style="display: block; margin: auto;" /&gt;
+
+---
+# Índice de riesgo
+
+&lt;img src="img/risk.png" width="300px" height="500px" style="display: block; margin: auto;" /&gt;
+
+---
+# El índice de riesgo se presenta de manera agrupada en los distritos del litoral costero ? 
+--
+.pull-left[
+&lt;img src="img/moran.png" width="600px" height="200px" /&gt;
+]
+--
+.pull-right[
+&lt;img src="img/cluster.png" width="800px" height="450px" /&gt;
+]
+
+
+---
+# Indentificando a CP posiblemente más afectados bajo un escenario de nivel 4
+
+&lt;img src="img/cp.png" width="650px" height="450px" /&gt;
+
+---
+# Indentificando CP con un alto nivel de riesgo
+
+&lt;img src="img/cpafectadps.png" width="650px" height="450px" /&gt;
+
+---
+background-size: cover
+class: center, middle, inverse
+
+#Gracias !
+🗺️
+&lt;div&gt;
+ &lt;img src="img/github.png" width="30" height="30" style="float: none;" /&gt;
+&lt;a href="https://github.com/barja8" &gt;barja8.github&lt;/a&gt;
+ &lt;/div&gt;
+
+
+&lt;div&gt;
+ &lt;img src="img/Twitter.png" width="30" height="30" style="float: none;" /&gt;
+ &lt;a href="https://twitter.com/AntonyBarja1"&gt;@Antony.Barja&lt;/a&gt;
+ &lt;/div&gt;
+
+
+&lt;div&gt;
+ &lt;img src="img/gmail.png" width="30" height="30" style="float: none;" /&gt;
+ &lt;a href=mailto:"antony.barja8@gmail.com"&gt;antony.barja8&lt;/a&gt;
+ &lt;/div&gt;
+  
+
+
+Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
